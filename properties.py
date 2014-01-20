@@ -1,0 +1,8 @@
+email_region = 'us-east-1'
+queue_region = 'eu-west-1'
+access_key_id = ''
+secret_access_key = ''
+queue_name = 'myqueue'
+message = 'This is my first message.'
+head = 'gridySpamReciver'
+tail = '@niepodam.pl'
