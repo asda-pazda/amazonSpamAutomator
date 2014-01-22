@@ -31,7 +31,7 @@ email_sender = EmailSender(properties.email_region,
 
 def setUp():
     #email_sender.setUpDefaultEmailAddresses(properties.sample_emails)
-    db_users.setUpDefaultUsers(properties.sample_users_list)
+    #db_users.setUpDefaultUsers(properties.sample_users_list)
     db_messages.removeAllMessages()
     queue_manager.removeAllMessagesFromQueue()
     #db_messages.setUpDefaultMessages(properties.sample_messages)
@@ -41,21 +41,21 @@ def tearDown():
     db_messages.removeAllMessages()
     db_users.removeAllUsers()
 
-
-#tearDown()
-
 def readMessageFromFile(filename):
         f = open(filename, 'r')
         return f.read()
 
+# dodawanie nowej wiadomosc do bazy danych i wywlanie id nowo dodanej wiadomosci do kolejki
 def addNewMessage(subject, message, category):
     message_id = db_messages.addMessage(message, category, subject)
     queue_manager.sendMessageToQueue(message_id)
 
+# wprowadza przykladowe wiadomosci z plikow tekstowych
 def setUpMessages():
     for message in properties.sample_messages:
         addNewMessage(message['subject'], readMessageFromFile(message['filename']), message['category'])
 
+# klasa pobierajaca zawartosc kolejki i wysylajaca wiadomosci do zainteresowanych osob
 def getMessagesFromQueueAndSendEmails():
     message_id = queue_manager.getMessageFromQueue()
     while message_id:
@@ -71,9 +71,11 @@ def getMessagesFromQueueAndSendEmails():
 
 setUp()
 setUpMessages()
+
 print 'sleep'
 time.sleep(5)
 print 'after sleep'
+
 getMessagesFromQueueAndSendEmails()
 #db_messages.printDB()
 #message = db_messages.getMessage('message4')
